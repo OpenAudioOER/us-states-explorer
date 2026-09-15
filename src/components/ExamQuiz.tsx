@@ -458,7 +458,6 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
           </div>
         )}
       </div>
-      </div>
     </div>
   );
 };
