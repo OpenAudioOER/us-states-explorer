@@ -6,6 +6,8 @@ import { Star, Trophy, Sparkles, Map, SpellCheck, Compass, Volume2, Award } from
 interface HeaderProps {
   currentMode: "exam" | "shape" | "spelling";
   setMode: (mode: "exam" | "shape" | "spelling") => void;
+  activeUnit: "unit1" | "unit2" | "all";
+  setActiveUnit: (unit: "unit1" | "unit2" | "all") => void;
   score: number;
   streak: number;
 }
@@ -13,6 +15,8 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   currentMode,
   setMode,
+  activeUnit,
+  setActiveUnit,
   score,
   streak,
 }) => {
@@ -29,12 +33,39 @@ export const Header: React.FC<HeaderProps> = ({
               US Geography Explorer
               <Sparkles className="w-6 h-6 text-yellow-300 animate-pulse" />
             </h1>
-            <p className="text-xs md:text-sm font-medium text-purple-100 flex items-center gap-2">
-              <span className="bg-yellow-400 text-purple-950 font-bold px-2 py-0.5 rounded-full text-xs">
-                Unit 1
-              </span>
-              23 Eastern & Southern States
-            </p>
+            {/* Unit Selector Toggle */}
+            <div className="flex items-center gap-1.5 mt-1">
+              <button
+                onClick={() => setActiveUnit("unit1")}
+                className={`text-xs font-bold px-2.5 py-0.5 rounded-full transition ${
+                  activeUnit === "unit1"
+                    ? "bg-yellow-300 text-purple-950 shadow-sm font-black"
+                    : "bg-white/20 text-white hover:bg-white/30"
+                }`}
+              >
+                Unit 1 (23 States)
+              </button>
+              <button
+                onClick={() => setActiveUnit("unit2")}
+                className={`text-xs font-bold px-2.5 py-0.5 rounded-full transition ${
+                  activeUnit === "unit2"
+                    ? "bg-yellow-300 text-purple-950 shadow-sm font-black"
+                    : "bg-white/20 text-white hover:bg-white/30"
+                }`}
+              >
+                Unit 2 (27 States) ⭐
+              </button>
+              <button
+                onClick={() => setActiveUnit("all")}
+                className={`text-xs font-bold px-2.5 py-0.5 rounded-full transition ${
+                  activeUnit === "all"
+                    ? "bg-yellow-300 text-purple-950 shadow-sm font-black"
+                    : "bg-white/20 text-white hover:bg-white/30"
+                }`}
+              >
+                All 50 States 🏆
+              </button>
+            </div>
           </div>
         </div>
 

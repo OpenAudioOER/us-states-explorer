@@ -10,12 +10,13 @@ import confetti from "canvas-confetti";
 type QuestionType = "mc" | "spelling_map" | "spelling_audio";
 
 interface ExamQuizProps {
+  dataset: StateInfo[];
   onSuccess: () => void;
   onFailure: () => void;
 }
 
-export const ExamQuiz: React.FC<ExamQuizProps> = ({ onSuccess, onFailure }) => {
-  const [currentState, setCurrentState] = useState<StateInfo>(UNIT_1_STATES[0]);
+export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailure }) => {
+  const [currentState, setCurrentState] = useState<StateInfo>(dataset[0]);
   const [questionType, setQuestionType] = useState<QuestionType>("mc");
   const [options, setOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -39,19 +40,21 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ onSuccess, onFailure }) => {
   };
 
   const loadNextQuestion = () => {
-    // If deck is empty, shuffle a brand new deck of all 23 Unit 1 states
+    if (!dataset || dataset.length === 0) return;
+
+    // If deck is empty, shuffle a brand new deck of active states dataset
     if (stateDeckRef.current.length === 0) {
-      stateDeckRef.current = shuffleArray(UNIT_1_STATES);
+      stateDeckRef.current = shuffleArray(dataset);
     }
 
     // Take next state from non-repeating deck
     const targetState = stateDeckRef.current.pop()!;
     setCurrentState(targetState);
 
-    // Track round progress (1 to 23)
-    const tested = UNIT_1_STATES.length - stateDeckRef.current.length;
+    // Track round progress
+    const tested = dataset.length - stateDeckRef.current.length;
     setStatesTestedInRound(tested);
-    if (tested === 1 && statesTestedInRound === 23) {
+    if (tested === 1 && statesTestedInRound === dataset.length) {
       setRoundNumber((prev) => prev + 1);
     }
 
@@ -68,7 +71,7 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ onSuccess, onFailure }) => {
     setSpellingInputs(new Array(targetState.name.length).fill(""));
 
     // Prepare MC options
-    const wrongOptions = UNIT_1_STATES.filter((s) => s.id !== targetState.id)
+    const wrongOptions = dataset.filter((s) => s.id !== targetState.id)
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
       .map((s) => s.name);
@@ -91,8 +94,9 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ onSuccess, onFailure }) => {
   };
 
   useEffect(() => {
+    stateDeckRef.current = [];
     loadNextQuestion();
-  }, []);
+  }, [dataset]);
 
   // Handle Multiple Choice Selection
   const handleSelectMCOption = (option: string) => {

@@ -6,27 +6,29 @@ import { Lightbulb, CheckCircle2, XCircle, ArrowRight, RefreshCw, Award } from "
 import confetti from "canvas-confetti";
 
 interface ShapeDetectiveProps {
+  dataset: StateInfo[];
   onSuccess: () => void;
   onFailure: () => void;
 }
 
-export const ShapeDetective: React.FC<ShapeDetectiveProps> = ({ onSuccess, onFailure }) => {
-  const [currentState, setCurrentState] = useState<StateInfo>(UNIT_1_STATES[0]);
+export const ShapeDetective: React.FC<ShapeDetectiveProps> = ({ dataset, onSuccess, onFailure }) => {
+  const [currentState, setCurrentState] = useState<StateInfo>(dataset[0]);
   const [options, setOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showHint, setShowHint] = useState(false);
 
   const loadNewQuestion = () => {
-    const randomIndex = Math.floor(Math.random() * UNIT_1_STATES.length);
-    const target = UNIT_1_STATES[randomIndex];
+    if (!dataset || dataset.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * dataset.length);
+    const target = dataset[randomIndex];
     setCurrentState(target);
     setSelectedAnswer(null);
     setIsCorrect(null);
     setShowHint(false);
 
     // Pick 3 wrong options from the dataset
-    const wrongOptions = UNIT_1_STATES.filter((s) => s.id !== target.id)
+    const wrongOptions = dataset.filter((s) => s.id !== target.id)
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
       .map((s) => s.name);
@@ -37,7 +39,7 @@ export const ShapeDetective: React.FC<ShapeDetectiveProps> = ({ onSuccess, onFai
 
   useEffect(() => {
     loadNewQuestion();
-  }, []);
+  }, [dataset]);
 
   const handleSelectOption = (option: string) => {
     if (selectedAnswer !== null) return; // Prevent double clicking
