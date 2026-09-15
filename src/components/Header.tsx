@@ -21,41 +21,41 @@ export const Header: React.FC<HeaderProps> = ({
   streak,
 }) => {
   return (
-    <header className="w-full bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink p-4 md:p-6 shadow-xl text-white rounded-b-3xl mb-6">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <header className="w-full bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink p-3 md:p-4 shadow-lg text-white rounded-b-2xl mb-3">
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Logo / Title */}
         <div className="flex items-center space-x-3">
-          <div className="bg-white text-brand-purple p-2.5 rounded-2xl shadow-md transform -rotate-3 hover:rotate-0 transition-transform">
-            <Compass className="w-8 h-8 stroke-[2.5]" />
+          <div className="bg-white text-brand-purple p-2 rounded-xl shadow-md transform -rotate-3 hover:rotate-0 transition-transform">
+            <Compass className="w-6 h-6 stroke-[2.5]" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-black tracking-wide drop-shadow-sm flex items-center gap-2">
+            <h1 className="text-xl md:text-2xl font-black tracking-wide drop-shadow-sm flex items-center gap-1.5">
               US Geography Explorer
-              <Sparkles className="w-6 h-6 text-yellow-300 animate-pulse" />
+              <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
             </h1>
-            <p className="text-xs md:text-sm font-medium text-purple-100">
+            <p className="text-[11px] md:text-xs font-medium text-purple-100">
               5th Grade Geography & Spelling Master
             </p>
           </div>
         </div>
 
         {/* Score & Streaks */}
-        <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/30 shadow-inner">
+        <div className="flex items-center space-x-3 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/30 shadow-inner">
           <div className="flex items-center space-x-1.5">
-            <Trophy className="w-6 h-6 text-yellow-300" />
-            <span className="text-lg font-bold">{score} pts</span>
+            <Trophy className="w-5 h-5 text-yellow-300" />
+            <span className="text-base font-bold">{score} pts</span>
           </div>
-          <div className="h-6 w-px bg-white/30" />
+          <div className="h-5 w-px bg-white/30" />
           <div className="flex items-center space-x-1.5">
-            <Star className="w-6 h-6 text-yellow-400 fill-yellow-400 animate-bounce" />
-            <span className="text-lg font-bold">{streak} Streak!</span>
+            <Star className="w-5 h-5 text-yellow-400 fill-yellow-400 animate-bounce" />
+            <span className="text-base font-bold">{streak} Streak!</span>
           </div>
         </div>
       </div>
 
       {/* PROMINENT UNIT SELECTOR SEGMENTED CONTROL BAR */}
-      <div className="max-w-3xl mx-auto mt-5 flex flex-col items-center">
-        <span className="text-xs font-black uppercase tracking-widest text-purple-200 mb-1.5 flex items-center gap-1">
+      <div className="max-w-3xl mx-auto mt-3 flex flex-col items-center">
+        <span className="text-[11px] font-black uppercase tracking-widest text-purple-200 mb-1 flex items-center gap-1">
           <Award className="w-3.5 h-3.5 text-yellow-300" /> Select Active Study Unit:
         </span>
         <div className="w-full grid grid-cols-3 gap-1.5 p-1.5 bg-purple-950/40 backdrop-blur-lg rounded-2xl border border-white/20 shadow-inner">

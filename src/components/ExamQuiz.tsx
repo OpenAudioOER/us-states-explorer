@@ -213,8 +213,8 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
         </button>
       </div>
 
-      {/* Main US Map Display - Enlarged for High Visibility */}
-      <div className="w-full h-[450px] md:h-[550px] lg:h-[600px] my-2 p-3 bg-slate-900 border-4 border-slate-700 rounded-3xl relative shadow-2xl flex items-center justify-center overflow-hidden">
+      {/* Main US Map Display - Optimized Compact Height to Fit Screen Without Scrolling */}
+      <div className="w-full h-[280px] md:h-[340px] lg:h-[360px] my-2 p-2 bg-slate-900 border-4 border-slate-700 rounded-3xl relative shadow-xl flex items-center justify-center overflow-hidden">
         <svg
           viewBox={US_MAP_VIEWBOX}
           className="w-full h-full filter drop-shadow-lg object-contain"
