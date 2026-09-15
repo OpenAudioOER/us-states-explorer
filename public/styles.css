@@ -1402,11 +1402,6 @@ video {
   color: rgb(139 92 246 / var(--tw-text-opacity, 1));
 }
 
-.text-gray-300 {
-  --tw-text-opacity: 1;
-  color: rgb(209 213 219 / var(--tw-text-opacity, 1));
-}
-
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity, 1));
@@ -1868,12 +1863,12 @@ body {
     height: 550px;
   }
 
-  .md\:w-12 {
-    width: 3rem;
+  .md\:w-11 {
+    width: 2.75rem;
   }
 
-  .md\:w-6 {
-    width: 1.5rem;
+  .md\:w-12 {
+    width: 3rem;
   }
 
   .md\:grid-cols-2 {

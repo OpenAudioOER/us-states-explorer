@@ -326,42 +326,44 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
               ({currentState.name.length} letters)
             </p>
 
-            {/* Letter Slots */}
-            <div className="flex flex-wrap items-center justify-center gap-2 max-w-full my-3">
-              {currentState.name.split("").map((targetChar, idx) => {
-                if (targetChar === " ") {
-                  return (
-                    <div key={idx} className="w-4 md:w-6 h-12 flex items-center justify-center">
-                      <span className="text-gray-400 font-bold">•</span>
-                    </div>
-                  );
-                }
-
-                let boxBorder = "border-2 border-brand-purple/40 bg-purple-50 text-purple-900";
-                if (isCompleted) {
-                  const userChar = (spellingInputs[idx] || "").toLowerCase();
-                  const correctChar = targetChar.toLowerCase();
-                  if (userChar === correctChar) {
-                    boxBorder = "border-2 border-green-500 bg-green-100 text-green-900 font-bold scale-105";
-                  } else {
-                    boxBorder = "border-2 border-red-500 bg-red-100 text-red-900 font-bold animate-shake";
-                  }
-                }
+            {/* Letter Slots Grouped by Word for Clean Multi-Line Formatting */}
+            <div className="flex flex-col items-center justify-center gap-3 max-w-full my-3">
+              {currentState.name.split(" ").map((word, wordIdx, wordsArr) => {
+                // Calculate starting character index for current word in overall state name string
+                const wordStartIndex = wordsArr.slice(0, wordIdx).join(" ").length + (wordIdx > 0 ? 1 : 0);
 
                 return (
-                  <input
-                    key={idx}
-                    ref={(el) => {
-                      inputRefs.current[idx] = el;
-                    }}
-                    type="text"
-                    maxLength={1}
-                    value={spellingInputs[idx] || ""}
-                    onChange={(e) => handleSpellingChange(idx, e.target.value)}
-                    onKeyDown={(e) => handleSpellingKeyDown(idx, e)}
-                    disabled={isCompleted}
-                    className={`w-10 h-12 md:w-12 md:h-14 rounded-2xl text-xl md:text-2xl font-black text-center shadow-md focus:outline-none focus:ring-4 focus:ring-brand-purple/30 uppercase transition-all ${boxBorder}`}
-                  />
+                  <div key={wordIdx} className="flex flex-wrap items-center justify-center gap-2">
+                    {word.split("").map((targetChar, charOffset) => {
+                      const overallIdx = wordStartIndex + charOffset;
+                      let boxBorder = "border-2 border-brand-purple/40 bg-purple-50 text-purple-900";
+                      if (isCompleted) {
+                        const userChar = (spellingInputs[overallIdx] || "").toLowerCase();
+                        const correctChar = targetChar.toLowerCase();
+                        if (userChar === correctChar) {
+                          boxBorder = "border-2 border-green-500 bg-green-100 text-green-900 font-bold scale-105";
+                        } else {
+                          boxBorder = "border-2 border-red-500 bg-red-100 text-red-900 font-bold animate-shake";
+                        }
+                      }
+
+                      return (
+                        <input
+                          key={overallIdx}
+                          ref={(el) => {
+                            inputRefs.current[overallIdx] = el;
+                          }}
+                          type="text"
+                          maxLength={1}
+                          value={spellingInputs[overallIdx] || ""}
+                          onChange={(e) => handleSpellingChange(overallIdx, e.target.value)}
+                          onKeyDown={(e) => handleSpellingKeyDown(overallIdx, e)}
+                          disabled={isCompleted}
+                          className={`w-10 h-12 md:w-11 md:h-13 rounded-2xl text-xl md:text-2xl font-black text-center shadow-md focus:outline-none focus:ring-4 focus:ring-brand-purple/30 uppercase transition-all ${boxBorder}`}
+                        />
+                      );
+                    })}
+                  </div>
                 );
               })}
             </div>
@@ -384,42 +386,43 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
               <span>{hasPlayedAudio ? "Replay State Name 🔊" : "Click to Listen 🔊"}</span>
             </button>
 
-            {/* Letter Slots */}
-            <div className="flex flex-wrap items-center justify-center gap-2 max-w-full my-3">
-              {currentState.name.split("").map((targetChar, idx) => {
-                if (targetChar === " ") {
-                  return (
-                    <div key={idx} className="w-4 md:w-6 h-12 flex items-center justify-center">
-                      <span className="text-gray-400 font-bold">•</span>
-                    </div>
-                  );
-                }
-
-                let boxBorder = "border-2 border-brand-pink/40 bg-pink-50 text-pink-900";
-                if (isCompleted) {
-                  const userChar = (spellingInputs[idx] || "").toLowerCase();
-                  const correctChar = targetChar.toLowerCase();
-                  if (userChar === correctChar) {
-                    boxBorder = "border-2 border-green-500 bg-green-100 text-green-900 font-bold scale-105";
-                  } else {
-                    boxBorder = "border-2 border-red-500 bg-red-100 text-red-900 font-bold animate-shake";
-                  }
-                }
+            {/* Letter Slots Grouped by Word for Clean Multi-Line Formatting */}
+            <div className="flex flex-col items-center justify-center gap-3 max-w-full my-3">
+              {currentState.name.split(" ").map((word, wordIdx, wordsArr) => {
+                const wordStartIndex = wordsArr.slice(0, wordIdx).join(" ").length + (wordIdx > 0 ? 1 : 0);
 
                 return (
-                  <input
-                    key={idx}
-                    ref={(el) => {
-                      inputRefs.current[idx] = el;
-                    }}
-                    type="text"
-                    maxLength={1}
-                    value={spellingInputs[idx] || ""}
-                    onChange={(e) => handleSpellingChange(idx, e.target.value)}
-                    onKeyDown={(e) => handleSpellingKeyDown(idx, e)}
-                    disabled={isCompleted}
-                    className={`w-10 h-12 md:w-12 md:h-14 rounded-2xl text-xl md:text-2xl font-black text-center shadow-md focus:outline-none focus:ring-4 focus:ring-brand-pink/30 uppercase transition-all ${boxBorder}`}
-                  />
+                  <div key={wordIdx} className="flex flex-wrap items-center justify-center gap-2">
+                    {word.split("").map((targetChar, charOffset) => {
+                      const overallIdx = wordStartIndex + charOffset;
+                      let boxBorder = "border-2 border-brand-pink/40 bg-pink-50 text-pink-900";
+                      if (isCompleted) {
+                        const userChar = (spellingInputs[overallIdx] || "").toLowerCase();
+                        const correctChar = targetChar.toLowerCase();
+                        if (userChar === correctChar) {
+                          boxBorder = "border-2 border-green-500 bg-green-100 text-green-900 font-bold scale-105";
+                        } else {
+                          boxBorder = "border-2 border-red-500 bg-red-100 text-red-900 font-bold animate-shake";
+                        }
+                      }
+
+                      return (
+                        <input
+                          key={overallIdx}
+                          ref={(el) => {
+                            inputRefs.current[overallIdx] = el;
+                          }}
+                          type="text"
+                          maxLength={1}
+                          value={spellingInputs[overallIdx] || ""}
+                          onChange={(e) => handleSpellingChange(overallIdx, e.target.value)}
+                          onKeyDown={(e) => handleSpellingKeyDown(overallIdx, e)}
+                          disabled={isCompleted}
+                          className={`w-10 h-12 md:w-12 md:h-14 rounded-2xl text-xl md:text-2xl font-black text-center shadow-md focus:outline-none focus:ring-4 focus:ring-brand-pink/30 uppercase transition-all ${boxBorder}`}
+                        />
+                      );
+                    })}
+                  </div>
                 );
               })}
             </div>
