@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
   streak,
 }) => {
   return (
-    <header className="w-full bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink p-4 shadow-lg text-white rounded-b-3xl mb-6">
+    <header className="w-full bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink p-4 md:p-6 shadow-xl text-white rounded-b-3xl mb-6">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Logo / Title */}
         <div className="flex items-center space-x-3">
@@ -29,43 +29,13 @@ export const Header: React.FC<HeaderProps> = ({
             <Compass className="w-8 h-8 stroke-[2.5]" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-wide drop-shadow-sm flex items-center gap-2">
+            <h1 className="text-2xl md:text-3xl font-black tracking-wide drop-shadow-sm flex items-center gap-2">
               US Geography Explorer
               <Sparkles className="w-6 h-6 text-yellow-300 animate-pulse" />
             </h1>
-            {/* Unit Selector Toggle */}
-            <div className="flex items-center gap-1.5 mt-1">
-              <button
-                onClick={() => setActiveUnit("unit1")}
-                className={`text-xs font-bold px-2.5 py-0.5 rounded-full transition ${
-                  activeUnit === "unit1"
-                    ? "bg-yellow-300 text-purple-950 shadow-sm font-black"
-                    : "bg-white/20 text-white hover:bg-white/30"
-                }`}
-              >
-                Unit 1 (23 States)
-              </button>
-              <button
-                onClick={() => setActiveUnit("unit2")}
-                className={`text-xs font-bold px-2.5 py-0.5 rounded-full transition ${
-                  activeUnit === "unit2"
-                    ? "bg-yellow-300 text-purple-950 shadow-sm font-black"
-                    : "bg-white/20 text-white hover:bg-white/30"
-                }`}
-              >
-                Unit 2 (27 States) ⭐
-              </button>
-              <button
-                onClick={() => setActiveUnit("all")}
-                className={`text-xs font-bold px-2.5 py-0.5 rounded-full transition ${
-                  activeUnit === "all"
-                    ? "bg-yellow-300 text-purple-950 shadow-sm font-black"
-                    : "bg-white/20 text-white hover:bg-white/30"
-                }`}
-              >
-                All 50 States 🏆
-              </button>
-            </div>
+            <p className="text-xs md:text-sm font-medium text-purple-100">
+              5th Grade Geography & Spelling Master
+            </p>
           </div>
         </div>
 
@@ -80,6 +50,50 @@ export const Header: React.FC<HeaderProps> = ({
             <Star className="w-6 h-6 text-yellow-400 fill-yellow-400 animate-bounce" />
             <span className="text-lg font-bold">{streak} Streak!</span>
           </div>
+        </div>
+      </div>
+
+      {/* PROMINENT UNIT SELECTOR SEGMENTED CONTROL BAR */}
+      <div className="max-w-3xl mx-auto mt-5 flex flex-col items-center">
+        <span className="text-xs font-black uppercase tracking-widest text-purple-200 mb-1.5 flex items-center gap-1">
+          <Award className="w-3.5 h-3.5 text-yellow-300" /> Select Active Study Unit:
+        </span>
+        <div className="w-full grid grid-cols-3 gap-1.5 p-1.5 bg-purple-950/40 backdrop-blur-lg rounded-2xl border border-white/20 shadow-inner">
+          <button
+            onClick={() => setActiveUnit("unit1")}
+            className={`py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-200 flex flex-col md:flex-row items-center justify-center gap-1.5 ${
+              activeUnit === "unit1"
+                ? "bg-yellow-300 text-purple-950 shadow-lg scale-[1.02]"
+                : "text-white/80 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>Unit 1</span>
+            <span className="text-[10px] md:text-xs font-semibold opacity-90">(23 States)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveUnit("unit2")}
+            className={`py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-200 flex flex-col md:flex-row items-center justify-center gap-1.5 ${
+              activeUnit === "unit2"
+                ? "bg-yellow-300 text-purple-950 shadow-lg scale-[1.02]"
+                : "text-white/80 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>Unit 2 ⭐</span>
+            <span className="text-[10px] md:text-xs font-semibold opacity-90">(27 States)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveUnit("all")}
+            className={`py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-200 flex flex-col md:flex-row items-center justify-center gap-1.5 ${
+              activeUnit === "all"
+                ? "bg-yellow-300 text-purple-950 shadow-lg scale-[1.02]"
+                : "text-white/80 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>All States 🏆</span>
+            <span className="text-[10px] md:text-xs font-semibold opacity-90">(50 States)</span>
+          </button>
         </div>
       </div>
 

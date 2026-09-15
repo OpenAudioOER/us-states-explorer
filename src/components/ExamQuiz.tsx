@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { StateInfo, UNIT_1_STATES, US_MAP_VIEWBOX } from "../data/statesData";
+import { StateInfo, ALL_50_STATES, US_MAP_VIEWBOX } from "../data/statesData";
 import { playStateAudio, playPositiveFeedbackAudio, playNegativeFeedbackAudio } from "../utils/audio";
 import { shuffleArray } from "../utils/shuffle";
 import { RefreshCw, CheckCircle2, XCircle, ArrowRight, Volume2, Sparkles, MapPin, SpellCheck, Trophy } from "lucide-react";
@@ -200,7 +200,7 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
 
           <span className="text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-full flex items-center gap-1">
             <Trophy className="w-3.5 h-3.5 text-amber-600" />
-            State {statesTestedInRound} of {UNIT_1_STATES.length} (Round {roundNumber})
+            State {statesTestedInRound} of {dataset.length} (Round {roundNumber})
           </span>
         </div>
 
@@ -221,13 +221,21 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
           style={{ maxHeight: "100%" }}
         >
           <g>
-            {UNIT_1_STATES.map((state) => {
+            {/* Render all 50 US States as full US map backdrop */}
+            {ALL_50_STATES.map((state) => {
+              const isInActiveDataset = dataset.some((d) => d.id === state.id);
               const isTarget = state.id === currentState.id;
               const isSelected = selectedAnswer !== null && state.name === selectedAnswer;
 
-              let fillColor = "#38BDF8"; // Vibrant blue state
-              let strokeColor = "#0284C7";
-              let strokeWidth = "1.5";
+              let fillColor = "#1E293B"; // Dark slate for inactive background states
+              let strokeColor = "#334155";
+              let strokeWidth = "1";
+
+              if (isInActiveDataset) {
+                fillColor = "#38BDF8"; // Vibrant sky blue for active unit states
+                strokeColor = "#0284C7";
+                strokeWidth = "1.5";
+              }
 
               if (isTarget) {
                 fillColor = "#FACC15"; // Bright yellow gold highlight for target!
@@ -251,7 +259,7 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
                     isTarget ? "animate-pulse" : ""
                   }`}
                 >
-                  <title>{isTarget ? "Highlighted State" : state.id}</title>
+                  <title>{isTarget ? "Highlighted State" : state.name}</title>
                 </path>
               );
             })}
