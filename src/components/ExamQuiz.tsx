@@ -177,31 +177,23 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
     }
   };
 
-  const feedbackRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (isCompleted && feedbackRef.current) {
-      feedbackRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  }, [isCompleted]);
-
   return (
-    <div className="max-w-6xl mx-auto bg-white rounded-3xl p-4 md:p-6 shadow-xl border-4 border-brand-purple/20 flex flex-col items-center">
+    <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-brand-purple/20 flex flex-col items-center">
       {/* Top Header & Question Type Badge */}
-      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-2 mb-3">
+      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-2 mb-4">
         <div className="flex flex-wrap items-center gap-2">
           {questionType === "mc" && (
-            <span className="text-xs md:text-sm font-extrabold uppercase tracking-wider bg-blue-100 text-brand-blue px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+            <span className="text-xs md:text-sm font-extrabold uppercase tracking-wider bg-blue-100 text-brand-blue px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
               <MapPin className="w-4 h-4" /> Type 1: Map Identification
             </span>
           )}
           {questionType === "spelling_map" && (
-            <span className="text-xs md:text-sm font-extrabold uppercase tracking-wider bg-purple-100 text-brand-purple px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+            <span className="text-xs md:text-sm font-extrabold uppercase tracking-wider bg-purple-100 text-brand-purple px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
               <SpellCheck className="w-4 h-4" /> Type 2: Map & Spelling
             </span>
           )}
           {questionType === "spelling_audio" && (
-            <span className="text-xs md:text-sm font-extrabold uppercase tracking-wider bg-pink-100 text-brand-pink px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
+            <span className="text-xs md:text-sm font-extrabold uppercase tracking-wider bg-pink-100 text-brand-pink px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
               <Volume2 className="w-4 h-4" /> Type 3: Audio & Spelling
             </span>
           )}
@@ -221,68 +213,66 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
         </button>
       </div>
 
-      {/* RESPONSIVE 2-COLUMN VIEWPORT LAYOUT: Map Left, Interaction Right */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
-        {/* Main US Map Display - Compact Height fitting directly on screen */}
-        <div className="lg:col-span-7 w-full h-[320px] md:h-[400px] lg:h-[450px] p-2 bg-slate-900 border-4 border-slate-700 rounded-3xl relative shadow-xl flex items-center justify-center overflow-hidden">
-          <svg
-            viewBox={US_MAP_VIEWBOX}
-            className="w-full h-full filter drop-shadow-lg object-contain"
-            style={{ maxHeight: "100%" }}
-          >
-            <g>
-              {/* Render all 50 US States as full US map backdrop */}
-              {ALL_50_STATES.map((state) => {
-                const isInActiveDataset = dataset.some((d) => d.id === state.id);
-                const isTarget = state.id === currentState.id;
-                const isSelected = selectedAnswer !== null && state.name === selectedAnswer;
+      {/* Main US Map Display - Enlarged for High Visibility */}
+      <div className="w-full h-[450px] md:h-[550px] lg:h-[600px] my-2 p-3 bg-slate-900 border-4 border-slate-700 rounded-3xl relative shadow-2xl flex items-center justify-center overflow-hidden">
+        <svg
+          viewBox={US_MAP_VIEWBOX}
+          className="w-full h-full filter drop-shadow-lg object-contain"
+          style={{ maxHeight: "100%" }}
+        >
+          <g>
+            {/* Render all 50 US States as full US map backdrop */}
+            {ALL_50_STATES.map((state) => {
+              const isInActiveDataset = dataset.some((d) => d.id === state.id);
+              const isTarget = state.id === currentState.id;
+              const isSelected = selectedAnswer !== null && state.name === selectedAnswer;
 
-                let fillColor = "#1E293B";
-                let strokeColor = "#334155";
-                let strokeWidth = "1";
+              let fillColor = "#1E293B"; // Dark slate for inactive background states
+              let strokeColor = "#334155";
+              let strokeWidth = "1";
 
-                if (isInActiveDataset) {
-                  fillColor = "#38BDF8";
-                  strokeColor = "#0284C7";
-                  strokeWidth = "1.5";
-                }
+              if (isInActiveDataset) {
+                fillColor = "#38BDF8"; // Vibrant sky blue for active unit states
+                strokeColor = "#0284C7";
+                strokeWidth = "1.5";
+              }
 
-                if (isTarget) {
-                  fillColor = "#FACC15";
-                  strokeColor = "#CA8A04";
-                  strokeWidth = "3";
-                } else if (isSelected) {
-                  fillColor = "#EF4444";
-                  strokeColor = "#B91C1C";
-                }
+              if (isTarget) {
+                fillColor = "#FACC15"; // Bright yellow gold highlight for target!
+                strokeColor = "#CA8A04";
+                strokeWidth = "3";
+              } else if (isSelected) {
+                fillColor = "#EF4444";
+                strokeColor = "#B91C1C";
+              }
 
-                return (
-                  <path
-                    key={state.id}
-                    d={state.path}
-                    fill={fillColor}
-                    stroke={strokeColor}
-                    strokeWidth={strokeWidth}
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    className={`transition-all duration-200 ${
-                      isTarget ? "animate-pulse" : ""
-                    }`}
-                  >
-                    <title>{isTarget ? "Highlighted State" : state.name}</title>
-                  </path>
-                );
-              })}
-            </g>
-          </svg>
+              return (
+                <path
+                  key={state.id}
+                  d={state.path}
+                  fill={fillColor}
+                  stroke={strokeColor}
+                  strokeWidth={strokeWidth}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  className={`transition-all duration-200 ${
+                    isTarget ? "animate-pulse" : ""
+                  }`}
+                >
+                  <title>{isTarget ? "Highlighted State" : state.name}</title>
+                </path>
+              );
+            })}
+          </g>
+        </svg>
 
-          <div className="absolute bottom-2 left-3 text-[11px] font-bold text-sky-200 bg-slate-800/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-slate-600">
-            📍 Target State Highlighted in Gold
-          </div>
+        <div className="absolute bottom-3 left-4 text-xs font-bold text-sky-200 bg-slate-800/80 backdrop-blur-md px-3 py-1 rounded-full border border-slate-600">
+          📍 Target State Highlighted in Gold
         </div>
+      </div>
 
-        {/* QUESTION INTERACTION AREA SIDE-BY-SIDE */}
-        <div className="lg:col-span-5 w-full flex flex-col items-center justify-center p-2">
+      {/* QUESTION INTERACTION AREA */}
+      <div className="w-full mt-4 flex flex-col items-center">
         {/* TYPE 1: MULTIPLE CHOICE */}
         {questionType === "mc" && (
           <div className="w-full flex flex-col items-center">
@@ -436,7 +426,7 @@ export const ExamQuiz: React.FC<ExamQuizProps> = ({ dataset, onSuccess, onFailur
 
         {/* VERIFICATION FEEDBACK CARD */}
         {isCompleted && (
-          <div ref={feedbackRef} className="w-full flex flex-col items-center bg-gray-50 p-4 rounded-2xl border border-gray-200 mt-4 animate-slideUp">
+          <div className="w-full flex flex-col items-center bg-gray-50 p-4 rounded-2xl border border-gray-200 mt-4 animate-slideUp">
             {isCorrect ? (
               <div className="text-center mb-3">
                 <span className="text-green-600 font-extrabold text-lg md:text-xl flex items-center justify-center gap-2">
